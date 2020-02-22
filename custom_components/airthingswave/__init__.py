@@ -1,6 +1,5 @@
 import logging
 
-from homeassistant.components.mqtt import DATA_MQTT
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_ID, CONF_NAME
 from homeassistant.helpers import device_registry as dr
@@ -17,10 +16,6 @@ async def async_setup(hass: HomeAssistantType, config: ConfigType) -> bool:
 
 
 async def async_setup_entry(hass: HomeAssistantType, config_entry: ConfigEntry) -> bool:
-    if DATA_MQTT not in hass.data:
-        logger.warning("MQTT integration needs to be set up!")
-        return False
-
     data = config_entry.data
     wave_id = data[CONF_ID]
 

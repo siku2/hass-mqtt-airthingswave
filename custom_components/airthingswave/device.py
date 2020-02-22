@@ -20,8 +20,8 @@ class WaveDevice:
 
     def __init__(self, hass: HomeAssistantType, device_info: dict, wave_id: str) -> None:
         self.hass = hass
-        self.wave_id = wave_id
         self.device_info = device_info
+        self.wave_id = wave_id
         self.debounce_delay = 5
 
         self.__sub_state = {}
@@ -36,13 +36,11 @@ class WaveDevice:
     def __handle_message(self, msg: Message) -> None:
         _, _, attr = msg.topic.rpartition("/")
         self.__state[attr] = msg.payload
-        logger.debug("got %r = %r", attr, msg.payload)
 
         if self.__timer_handle is not None:
             return
 
-        loop = self.hass.loop
-        self.__timer_handle = loop.call_later(self.debounce_delay, self.__handle_state_update)
+        self.__timer_handle = self.hass.loop.call_later(self.debounce_delay, self.__handle_state_update)
 
     def __handle_state_update(self) -> None:
         self.__timer_handle = None
