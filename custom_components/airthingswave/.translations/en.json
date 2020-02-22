@@ -1,0 +1,19 @@
+{
+  "config": {
+    "title": "Airthings Wave",
+    "step": {
+      "user": {
+        "title": "Connect",
+        "description": "Provide the wave id",
+        "data": {
+          "name": "Name",
+          "id": "Wave ID",
+          "send_airthings": "Send data to Airthings"
+        }
+      }
+    },
+    "error": {
+      "id_exists": "Wave ID already exists"
+    }
+  }
+}

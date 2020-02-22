@@ -1,0 +1,12 @@
+{
+  "domain": "airthingswave",
+  "name": "Airthings Wave",
+  "config_flow": true,
+  "dependencies": [
+    "mqtt"
+  ],
+  "codeowners": [
+    "siku2"
+  ],
+  "requirements": []
+}
