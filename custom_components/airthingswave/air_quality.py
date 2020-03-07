@@ -42,10 +42,13 @@ async def async_unload_entry(hass: HomeAssistantType, config_entry: ConfigEntry)
     return True
 
 
+_EXCLUDE_KEYS = {"co2"}
+
+
 class WaveAirQuality(WaveEntity, AirQualityEntity):
     @property
     def device_state_attributes(self) -> dict:
-        return select_keys(self._state, "humidity", "long_term_radon", "pressure", "temperature", "voc")
+        return {k: v for k, v in self._state.items() if k not in _EXCLUDE_KEYS}
 
     @property
     def state(self) -> Optional[int]:
@@ -62,16 +65,3 @@ class WaveAirQuality(WaveEntity, AirQualityEntity):
     @property
     def carbon_dioxide(self) -> Optional[float]:
         return self._state.get("co2")
-
-
-def select_keys(d: Dict[str, Any], *keys: str) -> Dict[str, Any]:
-    new = {}
-    for key in keys:
-        try:
-            value = d[key]
-        except KeyError:
-            pass
-        else:
-            new[key] = value
-
-    return new
