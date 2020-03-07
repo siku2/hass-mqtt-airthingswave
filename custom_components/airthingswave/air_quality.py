@@ -1,29 +1,55 @@
+import logging
 from typing import Any, Dict, Optional
 
 from homeassistant.components.air_quality import AirQualityEntity
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.helpers import dispatcher
 from homeassistant.helpers.typing import HomeAssistantType
 
-from .device import WaveEntity, get_device
+from .const import DOMAIN, SIGNAL_NEW_DEVICE
+from .device import WaveDevice, WaveEntity
+
+logger = logging.getLogger(__name__)
+
+
+def _get_platform_data(hass: HomeAssistantType) -> Dict[str, Any]:
+    try:
+        data = hass.data[DOMAIN]["air_quality"]
+    except KeyError:
+        data = hass.data[DOMAIN]["air_quality"] = {}
+
+    return data
 
 
 async def async_setup_entry(hass: HomeAssistantType, config_entry: ConfigEntry, add_entities) -> bool:
-    add_entities((WaveAirQuality(get_device(hass, config_entry)),))
+    async def handle_discovery(device: WaveDevice) -> None:
+        logger.debug("setting up air quality entity for device: %s", device)
+        add_entities((WaveAirQuality(device),))
+
+    disconnect = dispatcher.async_dispatcher_connect(hass, SIGNAL_NEW_DEVICE, handle_discovery)
+    _get_platform_data(hass)[config_entry.entry_id] = disconnect
     return True
 
 
 async def async_unload_entry(hass: HomeAssistantType, config_entry: ConfigEntry) -> bool:
+    try:
+        disconnect = _get_platform_data(hass)[config_entry.entry_id]
+    except KeyError:
+        pass
+    else:
+        disconnect()
+
     return True
 
 
 class WaveAirQuality(WaveEntity, AirQualityEntity):
     @property
     def device_state_attributes(self) -> dict:
-        return select_keys(self._state, "humidity", "pressure", "radon_long", "temperature")
+        return select_keys(self._state, "humidity", "long_term_radon", "pressure", "temperature", "voc")
 
     @property
-    def state(self) -> Optional[str]:
-        return self._state.get("radon_short")
+    def state(self) -> Optional[int]:
+        return self._state.get("short_term_radon")
 
     @property
     def particulate_matter_2_5(self) -> Optional[float]:
@@ -36,10 +62,6 @@ class WaveAirQuality(WaveEntity, AirQualityEntity):
     @property
     def carbon_dioxide(self) -> Optional[float]:
         return self._state.get("co2")
-
-    @property
-    def volatile_organic_compounds(self) -> Optional[float]:
-        return self._state.get("voc")
 
 
 def select_keys(d: Dict[str, Any], *keys: str) -> Dict[str, Any]:

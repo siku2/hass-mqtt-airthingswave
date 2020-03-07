@@ -1,7 +1,8 @@
 DOMAIN = "airthingswave"
 
-WAVE_DEVICES = f"{DOMAIN}_devices"
+PLATFORMS = ("air_quality",)
 
-DEFAULT_NAME = "Wave"
+KEY_DEVICES = "devices"
+KEY_DISCOVERER = "discoverer"
 
-CONF_SEND_TO_AIRTHINGS = "send_airthings"
+SIGNAL_NEW_DEVICE = f"{DOMAIN}-new_device"
