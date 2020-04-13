@@ -52,14 +52,14 @@ class SensorInfo:
 
 
 SENSORS = (
-    SensorInfo("humidity", unit_of_measurement="%", device_class="humidity"),
-    SensorInfo("light_level", unit_of_measurement="lm", device_class="illuminance"),
-    SensorInfo("short_term_radon", unit_of_measurement="Bq/m3"),
-    SensorInfo("long_term_radon", unit_of_measurement="Bq/m3"),
-    SensorInfo("temperature", unit_of_measurement="°C", device_class="temperature"),
-    SensorInfo("pressure", unit_of_measurement="mbar", device_class="pressure"),
-    SensorInfo("co2", unit_of_measurement="ppm"),
-    SensorInfo("voc", unit_of_measurement="ppb"),
+    SensorInfo("humidity", icon="mdi:water-percent", unit_of_measurement="%", device_class="humidity"),
+    SensorInfo("light_level", icon="mdi:lightbulb", unit_of_measurement="lm", device_class="illuminance"),
+    SensorInfo("short_term_radon", icon="mdi:radioactive", unit_of_measurement="Bq/m3"),
+    SensorInfo("long_term_radon", icon="mdi:radioactive", unit_of_measurement="Bq/m3"),
+    SensorInfo("temperature", icon="mdi:thermometer", unit_of_measurement="°C", device_class="temperature"),
+    SensorInfo("pressure", icon="mdi:percent", unit_of_measurement="mbar", device_class="pressure"),
+    SensorInfo("co2", icon="mdi:molecule-co2", unit_of_measurement="ppm"),
+    SensorInfo("voc", icon="mdi:air-filter", unit_of_measurement="ppb"),
 )
 
 
