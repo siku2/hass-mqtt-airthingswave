@@ -62,10 +62,6 @@ class WaveEntity(Entity):
         device.add_update_listener(self.on_state_update)
 
     @property
-    def unique_id(self) -> Optional[str]:
-        return self._device.wave_id
-
-    @property
     def device_info(self) -> dict:
         return self._device.device_info
 

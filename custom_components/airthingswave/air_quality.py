@@ -11,12 +11,14 @@ from .device import WaveDevice, WaveEntity
 
 logger = logging.getLogger(__name__)
 
+PLATFORM = "air_quality"
+
 
 def _get_platform_data(hass: HomeAssistantType) -> Dict[str, Any]:
     try:
-        data = hass.data[DOMAIN]["air_quality"]
+        data = hass.data[DOMAIN][PLATFORM]
     except KeyError:
-        data = hass.data[DOMAIN]["air_quality"] = {}
+        data = hass.data[DOMAIN][PLATFORM] = {}
 
     return data
 
@@ -47,6 +49,10 @@ _EXCLUDE_KEYS = {"co2"}
 
 class WaveAirQuality(WaveEntity, AirQualityEntity):
     @property
+    def unique_id(self) -> str:
+        return self._device.wave_id
+
+    @property
     def device_state_attributes(self) -> dict:
         return {k: v for k, v in self._state.items() if k not in _EXCLUDE_KEYS}
 
@@ -56,7 +62,7 @@ class WaveAirQuality(WaveEntity, AirQualityEntity):
 
     @property
     def particulate_matter_2_5(self) -> Optional[float]:
-        return None
+        return self._state.get("voc")
 
     @property
     def particulate_matter_10(self) -> Optional[float]:

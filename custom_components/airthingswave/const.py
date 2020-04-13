@@ -1,6 +1,6 @@
 DOMAIN = "airthingswave"
 
-PLATFORMS = ("air_quality",)
+PLATFORMS = ("air_quality", "sensor")
 
 KEY_DEVICES = "devices"
 KEY_DISCOVERER = "discoverer"
