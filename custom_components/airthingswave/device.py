@@ -1,6 +1,8 @@
 import asyncio
+import datetime
 import json
 import logging
+import time
 from typing import Callable, Optional
 
 from homeassistant.components.mqtt import Message
@@ -55,9 +57,12 @@ class WaveDevice:
 
 
 class WaveEntity(Entity):
+    _expires_at: Optional[float]
+
     def __init__(self, device: WaveDevice) -> None:
         self._device = device
         self._state = device.state.copy()
+        self.__update_state()
 
         device.add_update_listener(self.on_state_update)
 
@@ -71,7 +76,10 @@ class WaveEntity(Entity):
 
     @property
     def available(self) -> bool:
-        return True
+        if self._expires_at is None:
+            return True
+
+        return time.time() < self._expires_at
 
     @property
     def should_poll(self) -> bool:
@@ -80,7 +88,17 @@ class WaveEntity(Entity):
     async def async_added_to_hass(self) -> None:
         self.async_schedule_update_ha_state()
 
+    def __update_state(self) -> None:
+        state = self._state
+        try:
+            expires_at = datetime.datetime.fromisoformat(state["expires_at"])
+        except (KeyError, ValueError):
+            self._expires_at = None
+        else:
+            self._expires_at = expires_at.timestamp()
+
     async def on_state_update(self, state: dict) -> None:
         self._state = state
+        self.__update_state()
         if self.hass is not None:
             self.async_schedule_update_ha_state()

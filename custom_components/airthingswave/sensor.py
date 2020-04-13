@@ -82,6 +82,18 @@ class WaveAttrSensor(WaveEntity):
     def state(self) -> Union[None, str, int, float]:
         return self._state.get(self._sensor.id)
 
+    @property
+    def device_class(self) -> Optional[str]:
+        return self._sensor.device_class
+
+    @property
+    def unit_of_measurement(self) -> Optional[str]:
+        return self._sensor.unit_of_measurement
+
+    @property
+    def icon(self) -> Optional[str]:
+        return self._sensor.icon
+
 
 def create_sensors(device: WaveDevice) -> List[WaveAttrSensor]:
     sensors = []
