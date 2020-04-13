@@ -57,8 +57,8 @@ SENSORS = (
     SensorInfo("short_term_radon", icon="mdi:radioactive", unit_of_measurement="Bq/m3"),
     SensorInfo("long_term_radon", icon="mdi:radioactive", unit_of_measurement="Bq/m3"),
     SensorInfo("temperature", icon="mdi:thermometer", unit_of_measurement="°C", device_class="temperature"),
-    SensorInfo("pressure", icon="mdi:percent", unit_of_measurement="mbar", device_class="pressure"),
-    SensorInfo("co2", icon="mdi:molecule-co2", unit_of_measurement="ppm"),
+    SensorInfo("pressure", unit_of_measurement="mbar", device_class="pressure"),
+    SensorInfo("co2", icon="mdi:periodic-table-co2", unit_of_measurement="ppm"),
     SensorInfo("voc", icon="mdi:air-filter", unit_of_measurement="ppb"),
 )
 
