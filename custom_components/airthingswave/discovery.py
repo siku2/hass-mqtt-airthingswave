@@ -51,7 +51,7 @@ class DiscoveryHandler:
 
     async def start(self) -> None:
         await subscription.async_subscribe_topics(self.hass, self._subscription_state, {
-            "discovery": dict(topic="wave/#", msg_callback=self.__handle_message)
+            "discovery": dict(topic="wave/device/#", msg_callback=self.__handle_message)
         })
 
     async def stop(self) -> None:
@@ -59,7 +59,7 @@ class DiscoveryHandler:
 
     async def __handle_message(self, msg: Message) -> None:
         try:
-            _, sn, attr = msg.topic.split("/", 2)
+            _, sn, attr = msg.topic.rsplit("/", 2)
         except ValueError:
             logger.warning("received message with invalid wave topic: %s", msg)
             return
