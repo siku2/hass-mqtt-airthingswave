@@ -1,4 +1,5 @@
 import dataclasses
+import logging
 from typing import Any, Dict, List, Optional, Union
 
 from homeassistant.config_entries import ConfigEntry
@@ -7,6 +8,8 @@ from homeassistant.helpers.typing import HomeAssistantType
 
 from .const import DOMAIN, SIGNAL_NEW_DEVICE
 from .device import WaveDevice, WaveEntity
+
+logger = logging.getLogger(__name__)
 
 PLATFORM = "sensor"
 
@@ -22,6 +25,7 @@ def _get_platform_data(hass: HomeAssistantType) -> Dict[str, Any]:
 
 async def async_setup_entry(hass: HomeAssistantType, config_entry: ConfigEntry, add_entities) -> bool:
     async def handle_discovery(device: WaveDevice) -> None:
+        logger.debug("setting up sensors for device: %s", device)
         add_entities(create_sensors(device))
 
     disconnect = dispatcher.async_dispatcher_connect(hass, SIGNAL_NEW_DEVICE, handle_discovery)

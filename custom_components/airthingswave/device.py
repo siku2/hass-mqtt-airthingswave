@@ -23,6 +23,9 @@ class WaveDevice:
         self.__state = {}
         self.__update_listeners = []
 
+    def __str__(self) -> str:
+        return f"<Wave {self.wave_id}>"
+
     @property
     def state(self) -> dict:
         return self.__state
