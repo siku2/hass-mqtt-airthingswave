@@ -10,7 +10,7 @@ from .discovery import DiscoveryHandler
 logger = logging.getLogger(__name__)
 
 
-def _register_services(hass: HomeAssistantType) -> None:
+def register_services(hass: HomeAssistantType) -> None:
     def send_command(method: str, **kwargs) -> None:
         payload = kwargs
         payload["method"] = method
@@ -22,18 +22,18 @@ def _register_services(hass: HomeAssistantType) -> None:
     async def handle_update(call: ServiceCallType) -> None:
         send_command("update", devices=call.data.get("devices"))
 
-    hass.services.register(DOMAIN, "discover", handle_discover)
-    hass.services.register(DOMAIN, "update", handle_update)
+    hass.services.async_register(DOMAIN, "discover", handle_discover)
+    hass.services.async_register(DOMAIN, "update", handle_update)
 
 
-async def async_setup(hass: HomeAssistantType, config: ConfigType) -> bool:
+async def async_setup(hass: HomeAssistantType, _config: ConfigType) -> bool:
     hass.data[DOMAIN] = {}
     return True
 
 
 async def async_setup_entry(hass: HomeAssistantType, config_entry: ConfigEntry) -> bool:
     hass_data = hass.data[DOMAIN]
-    _register_services(hass)
+    register_services(hass)
 
     discoverer = hass_data[KEY_DISCOVERER] = DiscoveryHandler(hass, config_entry)
     await discoverer.start()
