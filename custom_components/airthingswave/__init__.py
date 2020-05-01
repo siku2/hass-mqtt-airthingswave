@@ -1,3 +1,4 @@
+import json
 import logging
 
 from homeassistant.components import mqtt
@@ -14,7 +15,7 @@ def register_services(hass: HomeAssistantType) -> None:
     def send_command(method: str, **kwargs) -> None:
         payload = kwargs
         payload["method"] = method
-        mqtt.async_publish(hass, "wave/command", payload)
+        mqtt.async_publish(hass, "wave/command", json.dumps(payload))
 
     async def handle_discover(_call: ServiceCallType) -> None:
         send_command("discover")
