@@ -14,6 +14,8 @@ logger = logging.getLogger(__name__)
 PLATFORM = "air_quality"
 
 
+# ! CURRENTLY UNUSED!
+
 def _get_platform_data(hass: HomeAssistantType) -> Dict[str, Any]:
     try:
         data = hass.data[DOMAIN][PLATFORM]
