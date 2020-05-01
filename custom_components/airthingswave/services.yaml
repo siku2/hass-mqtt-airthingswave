@@ -1,0 +1,12 @@
+discover:
+  description: Force discover new wave devices.
+
+update:
+  description: Force update.
+  fields:
+    devices:
+      description: |
+        Serial numbers of the wave devices to update.
+        Can be either a single serial number or a list of serial numbers.
+        This field is optional. Omitting it is the same as specifying every single serial number.
+      example: "[2900135175]"
