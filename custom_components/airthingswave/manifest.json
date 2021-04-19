@@ -1,6 +1,7 @@
 {
   "domain": "airthingswave",
   "name": "Airthings Wave",
+  "version": "0.1.0",
   "config_flow": true,
   "dependencies": [
     "mqtt"
