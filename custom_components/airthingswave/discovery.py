@@ -2,7 +2,7 @@ import asyncio
 import logging
 from typing import Dict, Optional
 
-from homeassistant.components.mqtt import Message, subscription
+from homeassistant.components.mqtt import ReceiveMessage, subscription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers import dispatcher
 from homeassistant.helpers.typing import HomeAssistantType
@@ -57,7 +57,7 @@ class DiscoveryHandler:
     async def stop(self) -> None:
         await subscription.async_unsubscribe_topics(self.hass, self._subscription_state)
 
-    async def __handle_message(self, msg: Message) -> None:
+    async def __handle_message(self, msg: ReceiveMessage) -> None:
         try:
             _, sn, attr = msg.topic.rsplit("/", 2)
         except ValueError:
