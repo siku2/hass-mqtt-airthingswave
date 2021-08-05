@@ -5,7 +5,7 @@ import logging
 import time
 from typing import Callable, Optional
 
-from homeassistant.components.mqtt import Message
+from homeassistant.components.mqtt import ReceiveMessage
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.typing import HomeAssistantType
 
@@ -30,7 +30,7 @@ class WaveDevice:
     def state(self) -> dict:
         return self.__state
 
-    async def __handle_sample(self, msg: Message) -> None:
+    async def __handle_sample(self, msg: ReceiveMessage) -> None:
         try:
             payload = json.loads(msg.payload)
         except json.JSONDecodeError:
@@ -39,7 +39,7 @@ class WaveDevice:
 
         self.__state.update(payload)
 
-    async def receive_message(self, attr: str, msg: Message) -> None:
+    async def receive_message(self, attr: str, msg: ReceiveMessage) -> None:
         if attr == "sample":
             await self.__handle_sample(msg)
         elif attr == "error":
