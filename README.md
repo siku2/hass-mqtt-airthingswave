@@ -2,13 +2,11 @@
 
 This is the Home Assistant counterpart for [balena-airthingswave](https://github.com/siku2/balena-airthingswave).
 
-
 ## Installation
 
 1. Go to the HACS Settings and add the custom repository `siku2/hass-mqtt-airthingswave` with category "Integration".
 2. Open the "Integrations" tab and search for "Airthings Wave".
 3. Follow the instructions there to set the integration up.
-
 
 ## Alternatives
 
