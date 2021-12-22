@@ -1,4 +1,3 @@
-from homeassistant.config_entries import CONN_CLASS_LOCAL_PUSH
 from homeassistant.helpers import config_entry_flow
 from homeassistant.helpers.typing import HomeAssistantType
 
@@ -10,4 +9,4 @@ async def _async_has_devices(hass: HomeAssistantType) -> bool:
     return True
 
 
-config_entry_flow.register_discovery_flow(DOMAIN, "MQTT", _async_has_devices, CONN_CLASS_LOCAL_PUSH)
+config_entry_flow.register_discovery_flow(DOMAIN, "MQTT", _async_has_devices)
