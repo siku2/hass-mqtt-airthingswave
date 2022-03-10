@@ -50,9 +50,10 @@ class DiscoveryHandler:
         return devices
 
     async def start(self) -> None:
-        await subscription.async_subscribe_topics(self.hass, self._subscription_state, {
+        sub_state = subscription.async_prepare_subscribe_topics(self.hass, self._subscription_state, {
             "discovery": dict(topic="wave/device/#", msg_callback=self.__handle_message)
         })
+        await subscription.async_subscribe_topics(self.hass, sub_state)
 
     async def stop(self) -> None:
         await subscription.async_unsubscribe_topics(self.hass, self._subscription_state)
